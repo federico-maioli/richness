@@ -1,0 +1,319 @@
+%% ============================================================================
+%%  Fisheries ecology manuscript draft template
+%%  ---------------------------------------------------------------------------
+%%  Compile with XeLaTeX or LuaLaTeX (required: fontspec / Libertinus Serif).
+%%  Overleaf: Menu > Settings > Compiler = XeLaTeX.
+%%  Bibliography: BibTeX + fishfish.bst (place fishfish.bst and bib.bib in
+%%  the same folder as this file).
+%%
+%%  Quick start
+%%    1. Fill in the title / author block below.
+%%    2. Write in the sections; use \citep{} / \citet{} for references.
+%%    3. Toggle \linenumbers on/off for review vs. clean copies.
+%%    4. Toggle \doublespacing (in the \begin{spacing} call) as needed.
+%% ============================================================================
+
+\documentclass[11pt]{article}
+
+% ---- Encoding & page geometry ----------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1.25in]{geometry}
+
+% ---- Math ------------------------------------------------------------------
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{amsbsy}
+\usepackage{bm}
+
+% ---- Colour & links --------------------------------------------------------
+\usepackage[dvipsnames]{xcolor}
+\definecolor{niceblue}{HTML}{236899}
+\definecolor{darkgrey}{HTML}{A9A9A9}
+% \rev{} = highlight revised text (e.g. in response to reviewers)
+\newcommand{\rev}[1]{{\color{niceblue} #1}}
+% \ml{} = margin/track comment in red (rename per co-author as you like)
+\newcommand{\ml}[1]{{\color{red}#1}}
+
+\usepackage{hyperref}
+\usepackage{nameref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,
+    urlcolor=niceblue,
+    citecolor=niceblue,
+    linkbordercolor=white
+}
+
+% ---- Figures, floats, tables -----------------------------------------------
+\usepackage{epsfig}
+\usepackage{subfig}
+\usepackage{float}
+\usepackage{placeins}     % \FloatBarrier
+\usepackage{booktabs}     % \toprule \midrule \bottomrule
+\usepackage{pdflscape}    % landscape pages for wide tables/figures
+\usepackage{array}
+
+% ---- Text layout helpers ---------------------------------------------------
+\usepackage{xspace}
+\usepackage{ragged2e}
+\usepackage{comment}
+\usepackage{hanging}      % hanging-indent reference list (SI)
+\usepackage{setspace}
+\usepackage{authblk}      % author / affiliation block
+
+% ---- Line numbers (for review) ---------------------------------------------
+\usepackage{lineno}
+% Make amsmath align/gather environments play nicely with line numbers:
+\makeatletter
+\let\LN@align\align
+\let\LN@endalign\endalign
+\renewcommand{\align}{\linenomath\LN@align}
+\renewcommand{\endalign}{\LN@endalign\endlinenomath}
+\let\LN@gather\gather
+\let\LN@endgather\endgather
+\renewcommand{\gather}{\linenomath\LN@gather}
+\renewcommand{\endgather}{\LN@endgather\endlinenomath}
+\makeatother
+\renewcommand\linenumberfont{\normalfont\bfseries\small\color{darkgrey}}
+\modulolinenumbers[2]     % show every 2nd line number
+
+% ---- Avoid orphan/widow lines ----------------------------------------------
+\widowpenalty10000
+\clubpenalty10000
+
+% ---- Bibliography ----------------------------------------------------------
+\usepackage[round]{natbib}
+\bibliographystyle{fishfish}
+\bibpunct{(}{)}{,}{a}{}{,}
+
+% ---- Fonts (requires XeLaTeX/LuaLaTeX) -------------------------------------
+\usepackage{fontspec}
+\setmainfont{Libertinus Serif}   % or: \setmainfont{Times New Roman}
+
+% ---- Custom column types for nicely wrapped table cells --------------------
+\newcolumntype{^}{>{\currentrowstyle}}
+\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp}
+\newcolumntype{C}[1]{>{\PreserveBackslash\centering}p{#1}}
+\newcolumntype{R}[1]{>{\PreserveBackslash\raggedleft}p{#1}}
+\newcolumntype{L}[1]{>{\PreserveBackslash\raggedright}p{#1}}
+
+% ---- A slightly bolder title font ------------------------------------------
+\newcommand*{\TitleFont}{%
+      \usefont{\encodingdefault}{\rmdefault}{b}{n}%
+      \fontsize{13}{15}%
+      \selectfont}
+
+% ---- Cross-reference helpers for reviewer line references ------------------
+\newcommand{\R}[1]{\label{#1}\linelabel{#1}}
+\newcommand{\lr}[1]{line~\lineref{#1}}
+
+\date{}
+
+% ============================================================================
+\begin{document}
+\begin{spacing}{2}   % double spacing; change to {1} or use \onehalfspacing
+
+% ---- TITLE / AUTHOR BLOCK --------------------------------------------------
+\noindent
+\textbf{Journal Name}
+
+\noindent
+\textbf{Article Type}   % e.g. Research Article
+
+\noindent
+\textbf{Do biodiversity hotspots represent rare fishes? A test across the North Sea–Baltic transition}
+%    Species-rich areas do not necessarily represent rare species
+
+\noindent
+\textbf{Authors}: Federico Maioli$^{1*}$, P. Daniël van Denderen$^{1}$, Benjamin Weigel$^{2}$, Max Lindmark$^{3}$, Fernanda C. da Silva$^{1}$,  Ole Henriksen$^{1}$, Tobias Mildenberger$^{1}$, Mikael van Deurs$^{1}$, Martin Lindegren$^{1}$
+\\~\\
+\noindent
+$^1$Technical University of Denmark (DTU), National Institute of Aquatic Resources (DTU Aqua), Kgs. Lyngby, Denmark
+
+\noindent
+$^2$INRAE, France
+
+\noindent
+$^3$Swedish University of Agricultural Sciences (SLU), Sweden
+\\~\\
+\noindent
+\textbf{*Corresponding author}: \href{mailto:name@email.com}{name@email.com}
+
+\noindent
+\textbf{ORCID:} First A. Author (0000-0000-0000-0000), Second B. Author (0000-0000-0000-0000).
+
+% Turn line numbers on for review copies; comment out for clean copies.
+\linenumbers
+\setcounter{secnumdepth}{0}   % remove section numbers
+\clearpage
+
+% ---- ABSTRACT --------------------------------------------------------------
+\section{Abstract}
+% ~150--300 words. State the question, the data/approach, the key findings,
+% and why they matter.
+Write the abstract here.
+
+\vspace*{\fill}
+\noindent
+Keywords:
+Keyword one,
+Keyword two,
+Keyword three,
+Keyword four,
+Keyword five\\
+\clearpage
+
+% ---- INTRODUCTION ----------------------------------------------------------
+\section{Introduction}
+Species richness is one of the most widely used metrics for identifying areas of high biodiversity and informing spatial conservation planning. However, species differ substantially in the size and spatial configuration of their distributions, such that areas supporting many species may disproportionately represent widespread species while failing to capture geographically restricted ones \citep{CoincidenceRarityRichness,ContributionRarityCommonness}. Consequently, species richness alone may provide an incomplete representation of biodiversity, particularly when conservation objectives include the protection of rare or range-restricted species \citep{tucker2012,v        each2017,albuquerque2021}.
+
+The relationship between species richness and rarity is particularly relevant for marine spatial planning, where environmental gradients can generate strong spatial turnover in community composition. Areas where environmental conditions overlap may support high numbers of species, whereas environmentally distinctive habitats may support fewer but more spatially restricted species. Approaches incorporating species range size or rarity can therefore identify priorities that differ substantially from those based solely on species richness \citep{arita2012,kujala2018}. Understanding the extent to which richness-based priorities represent range-restricted species is consequently important for evaluating the effectiveness of biodiversity-based spatial planning.
+
+Joint species distribution models (JSDMs) provide a framework for investigating these patterns by modelling multiple species simultaneously while accounting for shared environmental responses and spatial structure \citep{wartonManyVariablesJoint2015, ovaskainenHowMakeMore2017}. By generating spatially standardized predictions for entire species assemblages, JSDMs can be used not only to characterize individual species distributions but also to derive spatially explicit measures of community biodiversity, species range size, and rarity \citep{ovaskainen_abrego_2020}.
+
+Here, we use a JSDM to predict the spatial distribution of demersal fishes across the Danish Exclusive Economic Zone (EEZ). We ask whether areas of high species richness also represent habitat for range-restricted species, and evaluate how alternative biodiversity-based prioritization strategies differ in their representation of common and spatially restricted species. Specifically, we (i) quantify the spatial relationship between species richness and species rarity, (ii) evaluate how effectively richness-based hotspots capture the predicted distributions of range-restricted species, and (iii) compare richness-based and rarity-weighted approaches for representing biodiversity across the seascape. By linking multispecies distribution modelling with spatial biodiversity metrics, we aim to assess whether species-rich areas provide a sufficient proxy for broader biodiversity representation in heterogeneous marine environments.
+
+
+Second, widespread species seem to exert a disproportional effect on patterns of species richness, as compared with restricted taxa (Jetz and Rahbek, 2002, Lennon et al., 2004).
+% ---- METHODS ---------------------------------------------------------------
+\section{Methods}
+
+\subsection{Data}
+Describe the survey, sampling design, and data processing.
+
+\subsection{Joint species distribution model}
+We fitted a joint species distribution model (JSDM) using the \texttt{Hmsc} framework \citep{ovaskainenHowMakeMore2017, tikhonovJointSpeciesDistribution2020} to estimate the spatial distribution of the fish community. Species occurrence was modelled as a binary response, with probit regression model, allowing species-specific responses to environmental covariates while jointly modelling the community structure.
+
+Environmental predictors included depth, temperature, and substrate type. To allow for nonlinear responses, depth and temperature were modelled using second-order polynomials with raw polynomial terms. Substrate was included as a categorical predictor. The environmental component of the model can therefore be expressed as
+
+\begin{equation} \label{eq:linear}
+\Phi^{-1}\left(P(Y_{is}=1)\right)
+=
+\beta_{0s}
++
+\beta_{1s}D_i
++
+\beta_{2s}D_i^2
++
+\beta_{3s}T_i
++
+\beta_{4s}T_i^2
++
+\boldsymbol{\beta}_{5s}S_i,
+\end{equation}
+
+where $Y_{is}$ denotes the occurrence of species s at observation $i$, $D_i$ is depth, $T_i$ is temperature, $S_i$ represents substrate type, and $\Phi^{-1}$ is the inverse standard normal cumulative distribution function associated with the probit link.
+
+To account for repeated sampling at the same spatial locations, observations were assigned to sampling locations based on their geographic coordinates. The model included two random-effect levels: sampling location and year. The spatial random effect was specified using a nearest-neighbour Gaussian process (NNGP), with each sampling location conditioned on its 10 nearest neighbours \citep{tikhonovComputationallyEfficientJoint2020}. This approach allowed spatial dependence to be represented while maintaining computational tractability for the large number of sampling locations. The year effect accounted for temporal variation shared among species across survey years.
+
+For both spatial location and year, the latent-factor structure was restricted to a maximum of four latent factors to limit model complexity and computational demand. The resulting model therefore accounted for nonlinear environmental responses, spatial dependence, temporal variation, and residual covariance among species while estimating species-specific environmental associations within a joint hierarchical framework.
+
+\subsection{Statistical analysis}
+Describe the models. Equations can be written inline or in display form:
+\begin{equation} \label{eq:model}
+  \log(E(y_i)) = \bm{X}_i \bm{\beta} + \omega_i,
+\end{equation}
+where $y_i$ is the response, $\bm{X}_i$ the design matrix, $\bm{\beta}$ the
+fixed-effect coefficients, and $\omega_i$ a spatial random effect.
+
+\subsection{Software}
+We fit models in \textsf{R} \citep{example2020} using the \texttt{package}
+package.
+
+% ---- RESULTS ---------------------------------------------------------------
+\section{Results}
+Report the findings, referring to figures (Fig.~\ref{fig:example}) and tables
+(Table~\ref{tab:example}) as needed.
+
+% ---- DISCUSSION ------------------------------------------------------------
+\section{Discussion}
+Interpret the results, relate them to the literature, note limitations, and
+close with the broader implications.
+
+% ---- BACK MATTER -----------------------------------------------------------
+\section{Acknowledgements}
+Thank contributors, funders, and data providers here.
+
+\section{Author contributions}
+Describe contributions (e.g. CRediT roles).
+
+\section{Conflicts of interest}
+The authors declare that they have no conflict of interest.
+
+\section{Data Availability Statement}
+Code and data are available at \url{https://github.com/user/repo} and archived
+at \url{https://doi.org/xxxxx}.
+
+\section{Funding}
+Funding sources and grant numbers.
+
+\bibliography{bib}
+
+\end{spacing}
+\clearpage
+
+% ============================================================================
+%  TABLES
+% ============================================================================
+\section{Tables}
+
+\begin{table}[htp]
+  \centering
+  \caption{Example table caption.}
+  \renewcommand\arraystretch{2}
+  \label{tab:example}
+  \begin{tabular}{L{3cm} L{3cm} L{3cm}}
+    \toprule
+    \textbf{Column A} & \textbf{Column B} & \textbf{Column C} \\
+    \midrule
+    Row 1 & value & value \\
+    Row 2 & value & value \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\clearpage
+
+% ============================================================================
+%  FIGURES
+% ============================================================================
+\section{Figures}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/example.pdf}
+    \caption{Example figure caption.}
+    \label{fig:example}
+\end{figure}
+\clearpage
+
+% ============================================================================
+%  SUPPORTING INFORMATION
+%  Figures/tables are relabelled S1, S2, ... and page/line counters reset.
+% ============================================================================
+\renewcommand{\thetable}{S\arabic{table}}
+\setcounter{table}{0}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\setcounter{figure}{0}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+\renewcommand{\theHfigure}{S\arabic{figure}}
+\renewcommand{\theHtable}{S\arabic{table}}
+\onehalfspacing
+\resetlinenumber
+\setcounter{page}{1}
+\setcounter{equation}{0}
+\nolinenumbers
+
+\begin{Center}
+\section{Supporting Information}
+\end{Center}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/supp/example_supp.pdf}
+    \caption{Example supporting figure.}
+    \label{fig:example_supp}
+\end{figure}
+\FloatBarrier
+\clearpage
+
+\end{document}
